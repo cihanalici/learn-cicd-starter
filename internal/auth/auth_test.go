@@ -1,3 +1,4 @@
+// auth_test.go
 package auth
 
 import (
@@ -20,22 +21,23 @@ func TestGetAPIKey(t *testing.T) {
 			expectErr: ErrNoAuthHeaderIncluded,
 		},
 		{
-			name: "Malformed Authorization Headerqweqeweqwewq",
+			name: "Malformed Authorization Header",
 			headers: http.Header{
-				"Authorizatioweqweqewn": []string{"Bearer tokenqewqew"},
+				"Authorization": []string{"Bearer token"},
 			},
 			want:      "",
-			expectErr: errors.New("malformed authorization headeqweqwr"),
+			expectErr: errors.New("malformed authorization header"),
 		},
 		{
-			name: "Valid Authorization Headereee",
+			name: "Valid Authorization Header",
 			headers: http.Header{
 				"Authorization": []string{"ApiKey valid_api_key"},
 			},
-			want:      "valid_api_keye",
+			want:      "valid_api_key",
 			expectErr: nil,
 		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := GetAPIKey(tt.headers)
